@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <Routes>
           <Route path='/' element ={<Main />} />
-          <Route  path='todos' element = {<Todos />}/>
+          <Route  path='todos/:date' element = {<Todos />}/>
       </Routes>
     </div>
   );
