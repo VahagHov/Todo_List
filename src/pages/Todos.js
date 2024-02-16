@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
-import { updateTodo } from '../redux/todoSlice'
+import { onCompleted, updateTodo } from '../redux/todoSlice'
 import { onDelete } from '../redux/todoSlice'
 
 export const Todos = () => {
   const {date} = useParams()
   const dispatch = useDispatch();
   const todos = useSelector(({todos}) => todos[date])
+
+  console.log("log ---" , date);
+  console.log("log - 2 ----" , todos);
 
   const [editMode , setEditMode] = useState(false)
   const [editValue, setEditValue] = useState('');
@@ -19,11 +22,8 @@ export const Todos = () => {
     setEditID(todoId)
     setEditValue(description)
     setEditMode(true)
-  }
 
-  // const handleDelete = () => () => {
-  //   dispatch(onDelete({date,id}))
-  // }
+  }
 
   const handleEditChange = (e) => {
     setEditValue(e.target.value)
@@ -33,31 +33,34 @@ export const Todos = () => {
     dispatch(updateTodo({date , description: editValue , id: editId}))
     setEditMode(false)
   }
+
   return (
     <>
       <div>
-        <Link to="/">Back</Link>
         
         {todos?.map(({id , description , completed}) => {
             return (  
-                <ul key={id}>
-                    <li>
-                              <input type="checkbox" checked = {completed} onChange= ''/>
-                              description: {description}
-                               <button onClick={handleEdit(id)}>Edit</button>
-                               <button onClick={() => dispatch(onDelete(date,id))}>Delete</button>
-                    </li>
-                </ul>  
+            <>
+              <span><Link to="/">Back</Link></span>
+                <div key={id} className='Todos'>
+                    <input type="checkbox" checked = {completed} onChange={()=> dispatch(onCompleted({id,date,completed}))} />
+                    Description: {description}
+                    <button onClick={handleEdit(id)}>Edit</button>
+                    <button onClick={() => dispatch(onDelete({date,id}))}>Delete</button>
+                </div>       
+            </>
             )
             
-        })}
+        })}n
 
     </div>
+
         {editMode && (
-          <>
+          <div className='Edit_Mode'>
             <input type='text' value={editValue} onChange={handleEditChange} />
             <button onClick={handleConfirm}>Confirm</button>
-          </>
+          </div>
+          
         )}
     </>
     

@@ -27,10 +27,13 @@ export const Main = () => {
     }
     
   return (
-    <div>
-        <input value={description} type='text' onChange={handleChangeDescription}/>
+  <>
+  <div className='Todo_App'>TODO APP</div>
+
+    <div className='Main'>
+        <input value={description} type='text' placeholder='Enter Task' onChange={handleChangeDescription}/>
         <input value={date} type='date'  onChange={handleChangeDate}/>
-        <button onClick={handleAdd}>Add</button>
+        <button onClick={handleAdd}>Add Task</button>
      
 
         {Object.entries(todos).map(([date , list]) => {
@@ -38,19 +41,17 @@ export const Main = () => {
                   console.log('date', date)
                   console.log('list', list)
           return (
-            <div key={Math.random()}>
-              <ul > 
-                  <li>
-                      {date} 
-                      Count: { list.length}
-                      <Link to={`todos/${date}`}>Details</Link>
-                  </li>
-              </ul>
+            <div key={Math.random()} className='Main_Tasks'>
+                      <b>Upcoming Tasks</b>
+                      <h2>Deadline: {date} </h2>
+                      <h4> Count: { list.length} </h4>
+                      <button><Link to={`todos/${date}`}>Next</Link></button>
             </div>
               
           
           )
         })}
     </div>
+  </>
   )
 }
